@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A responsive banking homepage concept inspired by the supplied reference video.">
+  <title>Stark Consolidate Finance | Banking made simpler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="utility-bar reference-announcement">
+    <div class="container">Welcome to Stark Consolidate Finance — a simpler way to bank, built around you.</div>
+  </div>
+
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="#" aria-label="Stark Consolidate Finance home">
+        <span class="brand-mark">S</span>
+        <span class="brand-name">Stark <small>Consolidate Finance</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+      <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+        <a href="#products">Save</a>
+        <a href="#products">Spend</a>
+        <a href="#rates">Borrow</a>
+        <a href="#products">Services</a>
+        <a href="#news">News</a>
+        <a class="nav-search" href="#products" aria-label="Search">⌕</a>
+        <button class="login-btn" id="loginBtn" type="button">Log in</button>
+      </nav>
+    </div>
+  </header>
+
+
+  <main>
+    <section class="hero container" aria-label="Featured banking service">
+      <div class="hero-banner">
+        <div class="hero-copy" aria-live="polite">
+          <p class="eyebrow" id="heroEyebrow">DISCOVER LOCAL BANKING</p>
+          <h1 id="heroTitle">A new <span>chapter</span> starts here.</h1>
+          <p class="hero-description" id="heroDescription">Banking that moves with you. Find simple ways to save, borrow, and plan for what comes next.</p>
+          <a class="button button-primary" href="#products" id="heroCta">Explore our services <span>→</span></a>
+          <div class="hero-proof">
+            <span class="proof-icon">✓</span> Secure. Simple. Here for you.</div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-photo" role="img" aria-label="A person paddling a canoe on a calm river"></div>
+        </div>
+        <div class="hero-controls" aria-label="Choose featured story">
+          <button class="hero-dot active" type="button" aria-label="Show local banking story" aria-pressed="true"></button>
+          <button class="hero-dot" type="button" aria-label="Show savings story" aria-pressed="false"></button>
+          <button class="hero-dot" type="button" aria-label="Show home loan story" aria-pressed="false"></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="quick-help" aria-label="Popular banking tasks">
+      <div class="container quick-help-inner">
+        <div class="quick-intro">
+          <p class="eyebrow">HOW CAN WE HELP?</p>
+          <h2>I’d like<br>to...</h2></div>
+        <a class="quick-card quick-blue" href="#rates"><span class="quick-icon">％</span><strong>Check Rates</strong><small>See competitive rates.</small><span class="quick-pill">Let’s go →</span></a>
+        <a class="quick-card quick-orange" href="#installments"><span class="quick-icon">$</span><strong>Track an Installment</strong><small>View your next loan due date.</small><span class="quick-pill">Let’s go →</span></a>
+        <a class="quick-card quick-green" href="#products"><span class="quick-icon">▣</span><strong>Make a Budget</strong><small>Tools for financial control.</small><span class="quick-pill">Let’s go →</span></a>
+        <a class="quick-card quick-slate" href="#fixed-deposit"><span class="quick-icon">♧</span><strong>Save Money</strong><small>Explore fixed deposits.</small><span class="quick-pill">Let’s go →</span></a>
+        <button class="quick-card quick-blue" id="withdrawOpenBtn" type="button" style="text-align:left; cursor:pointer; border:none; background:#f8fafc;"><span class="quick-icon">↓</span><strong>Withdraw Funds</strong><small>Process bank withdrawal.</small><span class="quick-pill">Let’s go →</span></button>
+      </div>
+      <div class="quick-page">1 of 8</div>
+    </section>
+
+    <section class="goal-band" aria-label="Plan for your financial goals">
+      <div class="container goal-inner">
+        <div class="goal-art" aria-hidden="true">
+          <span class="goal-note note-home"><b>⌂</b><strong>Buy a home</strong><small>Start your journey</small></span>
+          <span class="goal-note note-car"><b>↗</b><strong>Get a vehicle</strong><small>Auto loans</small></span>
+          <span class="goal-note note-save"><b>◉</b><strong>Build savings</strong><small>Emergency fund</small></span>
+          <span class="goal-note note-budget"><b>▤</b><strong>Budget better</strong><small>Take control</small></span>
+          <span class="goal-note note-credit"><b>⌁</b><strong>Improve credit</strong><small>Step by step</small></span>
+          <span class="goal-note note-ready"><b>✓</b><strong>Emergency fund</strong><small>Be prepared</small></span>
+        </div>
+        <div class="goal-copy"><h2>What’s your <span>goal?</span></h2><p>Finance can feel complicated. It doesn’t have to be. Tell us what you’re working toward—we’ll give you a clear path to get there.
+        </p><a class="button button-primary" href="#products">Choose Your Goal <span>→</span></a><small class="goal-time">◷ Takes about 30 seconds</small></div>
+      </div>
+    </section>
+
+    <section class="section container" id="products">
+      <div class="section-heading"><div>
+        <p class="eyebrow">EXPLORE WHAT'S POSSIBLE</p>
+        <h2>Our <span>popular products</span></h2></div><a class="text-link" href="#footer">View all products <span>→</span></a></div>
+      <div class="product-grid">
+        <article class="product-card">
+          <img src="images/star home loan.jpeg" alt="Model house representing a home loan" loading="lazy">
+          <div class="product-body"><span class="product-tag">HOME FINANCE</span><h3>Star Home Loan</h3><p>Take a confident step towards a place you can call your own.</p><a class="button button-outline" href="home loan.html">Learn more <span>→</span></a></div>
+        </article>
+        <article class="product-card">
+          <img src="images/gold loan.jpeg" alt="Gold coins with seedlings growing from a savings pouch" loading="lazy">
+          <div class="product-body"><span class="product-tag">SAVE & GROW</span><h3>Gold Loan</h3><p>Access funds with a straightforward application process.</p><a class="button button-outline" href="gold.html">Learn more <span>→</span></a></div>
+        </article>
+        <article class="product-card">
+          <div class="account-illustration" role="img" aria-label="Illustration of a new bank account being created">
+            <span class="account-orbit orbit-one" aria-hidden="true">₹</span>
+            <span class="account-orbit orbit-two" aria-hidden="true">＋</span>
+            <span class="account-orbit orbit-three" aria-hidden="true">✓</span>
+            <div class="account-card-art" aria-hidden="true"><span class="account-chip"></span><span class="account-card-title">STARK BANK</span><span class="account-card-number">•••• &nbsp; •••• &nbsp; •••• &nbsp; 2048</span><span class="account-card-name">YOUR NEW ACCOUNT</span></div>
+            <span class="account-spark spark-one" aria-hidden="true">✦</span>
+            <span class="account-spark spark-two" aria-hidden="true">✦</span>
+          </div>
+          <div class="product-body"><span class="product-tag">START BANKING</span><h3>Create New Bank Account</h3><p>Begin an application for a new Stark bank account.</p><button class="button button-outline" id="createBankAccountBtn" type="button">Create account <span>→</span></button></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="rates-section" id="rates">
+      <div class="container rates-layout">
+        <div class="rates-photo" role="img" aria-label="Calculator on a desk"></div>
+        <div class="rates-content">
+          <p class="eyebrow">CLEAR OPTIONS. CONFIDENT CHOICES.</p>
+          <h2>Our new <span>interest rates</span></h2>
+          <div class="rate-card" id="rateCard" aria-live="polite">
+            <div class="rate-top"><span class="rate-icon" id="rateIcon">⌂</span><span class="rate-label" id="rateLabel">VEHICLE LOAN</span><span class="rate-badge">Example rate</span></div>
+            <p class="rate-caption">Interest rate from</p><div class="rate-number" id="rateNumber">7.60<small>% p.a.</small></div>
+            <p class="rate-note">Illustrative rate only. Actual rates and eligibility may vary.</p>
+            <button class="button button-primary" id="rateBtn" type="button">Calculate an estimate <span>→</span></button>
+          </div>
+          <div class="rate-carousel-controls" aria-label="Interest rate slides">
+            <button class="rate-arrow" id="ratePrevious" type="button" aria-label="Previous interest rate">‹</button>
+            <div class="rate-dots" id="rateDots" aria-label="Choose an interest rate slide"></div>
+            <button class="rate-arrow" id="rateNext" type="button" aria-label="Next interest rate">›</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="installment-section" id="installments">
+      <div class="container installment-layout">
+        <div class="installment-intro">
+          <p class="eyebrow">STAY ON TOP OF YOUR LOAN</p>
+          <h2>Track your <span>installments</span></h2>
+          <p>Enter your three account details to see the next installment due date and time remaining.</p>
+          <p class="installment-privacy">Backend lookup will be connected later. This demo does not send or save your details.</p>
+        </div>
+        <form class="installment-form" id="installmentForm">
+          <div class="installment-fields">
+            <label>Loan reference ID<input name="loanReferenceId" type="text" autocomplete="off" placeholder="e.g. LN-20481" required></label>
+            <label>Account holder’s name<input name="holderName" type="text" autocomplete="name" placeholder="Name on the account" required></label>
+            <label>Bank account number<input name="accountNumber" type="text" inputmode="numeric" autocomplete="off" pattern="[0-9]{6,18}" minlength="6" maxlength="18" placeholder="6–18 digits" required></label>
+          </div>
+          <button class="button button-primary" id="installmentSubmit" type="submit">Check next installment <span>→</span></button>
+          <p class="installment-feedback" id="installmentFeedback" role="status" aria-live="polite"></p>
+          <article class="installment-reminder" id="installmentReminder" hidden>
+            <span class="installment-status" id="installmentStatus">UPCOMING INSTALLMENT</span>
+            <h3 id="remainingTime"></h3>
+            <p class="installment-countdown-label">Time remaining</p>
+            <p id="nextDueDate"></p>
+            <p class="installment-reference" id="reminderReference"></p>
+          </article>
+        </form>
+      </div>
+    </section>
+
+    <section class="fd-section" id="fixed-deposit">
+      <div class="container">
+        <div class="fd-heading">
+          <div><p class="eyebrow">SAVE WITH A PLAN</p><h2>Fixed Deposit <span>estimate</span></h2></div>
+          <p>Explore an illustrative estimate for a one-time deposit. Actual rates and returns depend on the bank’s current offer and terms.</p>
+        </div>
+        <div class="fd-calculator">
+          <form class="fd-inputs" id="fdCalculator">
+            <label>Amount to deposit (₹)<input id="fdAmount" type="number" min="10000" step="1000" value="500000" required></label>
+            <label>Deposit term (months)<input id="fdTerm" type="number" min="1" max="120" step="1" value="36" required></label>
+            <label>Interest payout<select id="fdPayout"><option value="maturity">On maturity</option><option value="quarterly">Quarterly payout</option><option value="monthly">Monthly payout</option></select></label>
+            <p class="fd-rate-note">Illustrative demo rate: <strong>6.50% p.a.</strong></p>
+          </form>
+          <div class="fd-results" aria-live="polite">
+            <p class="fd-result-label">Estimated maturity amount</p>
+            <strong class="fd-maturity" id="fdMaturity">—</strong>
+            <div class="fd-result-grid">
+              <div><span>Principal</span><strong id="fdPrincipal">—</strong></div>
+              <div><span>Estimated interest</span><strong id="fdInterest">—</strong></div>
+              <div class="fd-date-result"><span>Maturity date</span><strong id="fdMaturityDate">—</strong></div>
+            </div>
+            <button class="button button-light fd-apply-button" id="fdApplyOpen" type="button">Apply for FD <span>→</span></button>
+            <p class="fd-disclaimer">Estimate only. This demo does not open a deposit or represent a bank offer.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="news">
+      <div class="section-heading"><div>
+        <p class="eyebrow">STAY INFORMED</p>
+        <h2>Latest news <span>& caution</span></h2></div><a class="text-link" href="#footer">All updates <span>→</span></a></div>
+      <div class="news-grid">
+        <article class="news-panel">
+          <div class="panel-heading"><h3><span class="panel-symbol">↗</span> Latest news</h3><a href="#footer">View all</a></div>
+          <a class="news-item" href="#footer"><span class="news-date">UPDATE</span><span><strong>Digital banking services</strong><small>Find the latest service announcements and helpful updates.</small></span><b>→</b></a>
+          <a class="news-item" href="#footer"><span class="news-date">NOTICE</span><span><strong>Customer awareness</strong><small>Review important reminders for safer banking.</small></span><b>→</b></a>
+          <a class="news-item" href="#footer"><span class="news-date">INFO</span><span><strong>New customer resources</strong><small>Explore guides to help you bank with confidence.</small></span><b>→</b></a>
+        </article>
+        <article class="news-panel caution-panel">
+          <div class="panel-heading"><h3><span class="panel-symbol warning">!</span> Caution</h3><a href="#footer">View all</a></div>
+          <a class="news-item" href="#footer"><span class="news-date warning-text">ALERT</span><span><strong>Beware of fake calls</strong><small>Bank staff will never ask you to reveal your OTP or PIN.</small></span><b>→</b></a>
+          <a class="news-item" href="#footer"><span class="news-date warning-text">SAFETY</span><span><strong>Protect your account</strong><small>Do not click suspicious links or install unknown apps.</small></span><b>→</b></a>
+          <a class="news-item" href="#footer"><span class="news-date warning-text">REMINDER</span><span><strong>Report suspicious activity</strong><small>Contact your bank through verified official channels.</small></span><b>→</b></a>
+        </article>
+      </div>
+    </section>
+
+    <section class="cta-band"><div class="container cta-inner"><div><p class="eyebrow">HERE WHEN YOU NEED US</p><h2>Good things start with a plan.</h2><p>Find the service that fits your next step.</p></div><a class="button button-light" href="#products">Explore services <span>→</span></a></div></section>
+  </main>
+
+  <footer id="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand"><a class="brand brand-light" href="#"><span class="brand-mark">S</span><span class="brand-name">Stark <small>Consolidate Finance</small></span></a><p>Everyday banking, designed around you.</p></div>
+      <div><h4>Popular products</h4><a href="#products">Home loan</a><a href="gold.html">Gold loan</a><a href="#products">Create new bank account</a></div>
+      <div><h4>Useful links</h4><a href="#news">Latest news</a><a href="#rates">Interest rates</a><a href="#footer">Customer support</a></div>
+      <div><h4>Stay safe</h4><a href="#news">Fraud awareness</a><a href="#news">Security tips</a><a href="#footer">Privacy & terms</a></div>
+    </div>
+    <div class="container footer-bottom"><span>© <span id="year"></span> Stark Consolidate Finance. Student demo concept.</span><span>Never share your OTP, PIN, or password.</span></div>
+  </footer>
+
+  <dialog class="login-modal" id="loginModal" aria-labelledby="loginTitle">
+    <button class="login-close" id="loginClose" type="button" aria-label="Close sign in"></button>
+    <aside class="login-promo">
+      <div class="login-promo-brand"><span class="brand-mark">S</span><span>STARK<br><small>CONSOLIDATE FINANCE</small></span></div>
+      <div class="login-promo-copy"><p>YOUR FINANCIAL LIFE, IN FOCUS</p><h2>Banking for<br>what comes next.</h2><span>Simple, secure access to your everyday banking.</span></div>
+      <span class="login-promo-foot">STARK CONSOLIDATE FINANCE</span>
+    </aside>
+    <section class="login-form-panel">
+      <div class="login-mobile-brand"><span class="brand-mark">S</span><span>STARK <small>CONSOLIDATE FINANCE</small></span></div>
+      <p class="login-kicker" id="loginKicker">ONLINE BANKING</p>
+      <h2 id="loginTitle">Welcome back</h2>
+      <p class="login-subtitle">Sign in to access your accounts and services.</p>
+      <form id="loginForm" autocomplete="off">
+        <div id="loginCredentials">
+          <label for="customerPhone">Phone Number</label>
+          <input id="customerPhone" name="loginPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Enter your phone number" data-required>
+          <div class="login-password-label"><label for="customerPassword">Password / PIN</label><button type="button" id="forgotPassword">Forgot password?</button></div>
+          <input id="customerPassword" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" data-required>
+          <label class="login-check"><input type="checkbox" name="rememberDevice"><span>Remember this device</span></label>
+        </div>
+        <div class="registration-fields" id="signupFields" hidden>
+          <div class="registration-grid">
+            <label>Full Name<input name="fullName" type="text" autocomplete="name" placeholder="Your full name" data-required></label>
+            <label>Date of Birth<input name="dateOfBirth" type="date" data-required></label>
+            <label>Email Address<input name="email" type="email" autocomplete="email" placeholder="you@example.com" data-required></label>
+            <label>Phone Number<input name="phone" type="tel" autocomplete="tel" placeholder="Your phone number" data-required></label>
+            <label>Create Password<input id="signupPassword" name="newPassword" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" data-required></label>
+            <label>Confirm Password<input id="signupPasswordConfirm" name="confirmPassword" type="password" autocomplete="new-password" minlength="8" placeholder="Re-enter your password" data-required></label>
+          </div>
+        </div>
+        <button class="login-submit" id="loginSubmit" type="submit">Sign in <span aria-hidden="true">→</span></button>
+        <p class="login-feedback" id="loginFeedback" role="status" aria-live="polite"></p>
+        <button class="auth-mode-toggle" id="authModeToggle" type="button">New to Stark? <strong>Sign up</strong></button>
+      </form>
+      <p class="login-help"><span id="loginHelpText">Need help signing in?</span> <a href="#footer">Contact support</a></p>
+    </section>
+  </dialog>
+
+  <dialog class="account-create-modal" id="accountCreationModal" aria-labelledby="accountCreationTitle">
+    <button class="account-create-close" id="accountCreationClose" type="button" aria-label="Close account application"></button>
+    <p class="eyebrow">STARK CONSOLIDATE FINANCE</p>
+    <h2 id="accountCreationTitle">Create New Bank Account</h2>
+    <p class="account-create-intro">Complete this application form to get started. This demo does not submit or save your information.</p>
+    <form id="accountCreationForm" autocomplete="off">
+      <div class="registration-grid">
+        <label>Full Name<input name="fullName" type="text" autocomplete="name" placeholder="Your full name" required></label>
+        <label>Date of Birth<input name="dateOfBirth" type="date" required></label>
+        <label>Phone Number<input name="phone" type="tel" autocomplete="tel" placeholder="Your phone number" required></label>
+        <label>Email Address<input name="email" type="email" autocomplete="email" placeholder="you@example.com" required></label>
+        <label class="registration-wide">Residential Address<textarea name="address" rows="2" placeholder="Street, city, postal code" required></textarea></label>
+        <fieldset><legend>Preferred Account Type</legend><div class="registration-options"><label><input type="radio" name="accountType" value="savings" required> Savings</label><label><input type="radio" name="accountType" value="checking"> Checking</label><label><input type="radio" name="accountType" value="joint"> Joint</label></div></fieldset>
+        <fieldset><legend>Preferred Currency</legend><div class="registration-options"><label><input type="radio" name="currency" value="INR" required> INR</label><label><input type="radio" name="currency" value="USD"> USD</label><label><input type="radio" name="currency" value="EUR"> EUR</label></div></fieldset>
+        <label class="registration-wide">Initial Deposit Amount<input name="initialDeposit" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" required></label>
+        <label>ID Type<select name="idType" required><option value="">Choose ID type</option><option>National ID</option><option>Passport</option><option>Driver’s License</option><option>Other</option></select></label>
+        <label>ID Number<input name="idNumber" type="text" placeholder="Enter ID number" required></label>
+        <label>Occupation<input name="occupation" type="text" placeholder="Your occupation" required></label>
+        <label>Employer Name<input name="employer" type="text" placeholder="Employer or company" required></label>
+        <label class="registration-wide registration-consent"><input type="checkbox" name="termsAgreement" required><span>I confirm that the information provided is accurate and agree to the bank’s terms and conditions.</span></label>
+        <label>Upload Your Photo (JPEG)<input id="accountPhoto" name="photo" type="file" accept="image/jpeg,.jpg,.jpeg" required></label>
+        <img id="accountPhotoPreview" class="account-photo-preview" alt="Selected account applicant photo" hidden>
+        <label>Date<input name="signatureDate" type="date" required></label>
+      </div>
+      <button class="login-submit" type="submit">Submit account application <span aria-hidden="true">→</span></button>
+      <p class="login-feedback" id="accountCreationFeedback" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <dialog class="account-create-modal fd-apply-modal" id="fdApplyModal" aria-labelledby="fdApplyTitle">
+    <button class="account-create-close" id="fdApplyClose" type="button" aria-label="Close fixed deposit application"></button>
+    <p class="eyebrow">FIXED DEPOSIT APPLICATION</p>
+    <h2 id="fdApplyTitle">Apply for a Fixed Deposit</h2>
+    <p class="account-create-intro">Enter the account and deposit details for this demo application. Nothing is sent or saved.</p>
+    <form id="fdApplyForm" class="fd-apply-form" autocomplete="off">
+      <div class="registration-grid">
+        <label>Account holder’s name<input name="holderName" type="text" autocomplete="name" placeholder="Name on the account" required></label>
+        <label>Account number<input name="accountNumber" type="text" inputmode="numeric" pattern="[0-9]{6,18}" minlength="6" maxlength="18" placeholder="6–18 digits" required></label>
+        <label>Phone number<input name="phone" type="tel" autocomplete="tel" placeholder="Your phone number" required></label>
+        <label>Deposit amount (₹)<input name="amount" type="number" min="10000" step="1000" required></label>
+        <label class="registration-wide">Address<textarea name="address" rows="2" placeholder="Street, city, postal code" required></textarea></label>
+        <label>FD term (years)<input name="termYears" type="number" min="0.08" max="10" step="0.01" required></label>
+        <label>Interest payout<select name="payout" required><option value="maturity">On maturity</option><option value="quarterly">Quarterly payout</option><option value="monthly">Monthly payout</option></select></label>
+        <label>FD option<select name="fdOption" required><option value="regular">Regular FD</option><option value="monthly-income">Monthly income option</option><option value="tax-saver">Tax-saver option</option></select></label>
+        <label>Nominee name (optional)<input name="nominee" type="text" placeholder="Nominee full name"></label>
+      </div>
+      <button class="login-submit" type="submit">Submit FD application <span aria-hidden="true">→</span></button>
+      <p class="login-feedback" id="fdApplyFeedback" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <dialog class="modal loan-estimate-modal" id="loanEstimateModal" aria-labelledby="loanEstimateTitle">
+    <button class="modal-close" id="loanEstimateClose" type="button" aria-label="Close loan estimate"></button>
+    <p class="eyebrow">ILLUSTRATIVE LOAN CALCULATOR</p>
+    <h2 id="loanEstimateTitle">Estimate your repayments</h2>
+    <p class="loan-estimate-intro">Adjust the details to see an estimated monthly payment. This demo does not submit or save your information.</p>
+    <form id="loanEstimateForm" class="loan-estimate-form">
+      <label>Loan type and applicable rate
+        <select id="estimateLoanType" name="loanType" aria-describedby="estimateRateHelp"></select>
+        <span class="loan-rate-help" id="estimateRateHelp">Illustrative rate: <strong id="estimateRate">—</strong> p.a.</span>
+      </label>
+      <div class="loan-estimate-fields">
+        <label>Loan amount (₹)<input id="estimateAmount" name="amount" type="number" min="10000" max="100000000" step="10000" value="500000" required></label>
+        <label>Loan term (years)<input id="estimateTerm" name="term" type="number" min="0.5" max="30" step="0.5" value="5" required></label>
+      </div>
+      <div class="loan-estimate-results" aria-live="polite">
+        <div><span>Estimated monthly payment</span><strong id="estimateEmi">—</strong></div>
+        <div><span>Estimated total interest</span><strong id="estimateInterest">—</strong></div>
+        <div><span>Estimated total repayment</span><strong id="estimateTotal">—</strong></div>
+      </div>
+      <p class="loan-estimate-disclaimer">Estimates use monthly repayments and the displayed illustrative rate. Actual rates, fees, eligibility, and repayment amounts may differ.</p>
+    </form>
+    <button class="button button-primary" id="loanEstimateDone" type="button">Done</button>
+  </dialog>
+
+  <dialog class="account-create-modal" id="withdrawModal" aria-labelledby="withdrawTitle">
+    <button class="account-create-close" id="withdrawClose" type="button" aria-label="Close withdrawal form"></button>
+    <p class="eyebrow">STARK CONSOLIDATE FINANCE</p>
+    <h2 id="withdrawTitle">Withdraw Bank Funds</h2>
+    <p class="account-create-intro">Enter your account details and withdrawal amount to process a transaction.</p>
+    <form id="withdrawForm" autocomplete="off">
+      <div class="registration-grid">
+        <label>Account Number<input name="accountNumber" type="text" placeholder="6–18 digits account number" required></label>
+        <label>Account Holder Name<input name="holderName" type="text" placeholder="Name on the account" required></label>
+        <label>Withdrawal Amount (₹)<input name="amount" type="number" min="100" step="100" placeholder="0.00" required></label>
+        <label>Withdrawal Mode<select name="mode"><option value="ATM / Cash">ATM / Cash</option><option value="Bank Transfer">Bank Transfer (NEFT/IMPS)</option><option value="UPI">UPI Transfer</option></select></label>
+      </div>
+      <button class="login-submit" type="submit">Process Withdrawal <span aria-hidden="true">→</span></button>
+      <p class="login-feedback" id="withdrawFeedback" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="infoModal" aria-labelledby="modalTitle">
+    <button class="modal-close" id="modalClose" aria-label="Close dialog"></button>
+    <p class="eyebrow">STARK CONSOLIDATE FINANCE DEMO</p><h2 id="modalTitle">A safer banking experience</h2>
+    <p id="modalText">This is a front-end student demo. No banking account is connected and no personal information is collected.</p>
+    <button class="button button-primary" id="modalOk" type="button">Got it</button>
+  </dialog>
+  <script src="script.js"></script>
+</body>
+</html>
+
+

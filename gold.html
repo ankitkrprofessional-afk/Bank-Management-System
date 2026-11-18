@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Estimate the value of your gold and explore an illustrative gold loan repayment plan.">
+  <title>Gold Loans | Stark Consolidate Finance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="gold.css">
+</head>
+<body>
+  <header class="brand-bar"><div class="bar-inner"><a class="brand" href="index.html" aria-label="Stark Consolidate Finance home"><span class="brand-symbol">S</span><span><strong>STARK</strong><small>CONSOLIDATE FINANCE</small></span></a><span class="brand-divider"></span><span class="brand-product">Gold Loans</span><a class="header-home" href="index.html">⌂ Home</a><a class="header-help" href="#faqs">Help &amp; FAQs <span>↗</span></a></div></header>
+  <main id="main">
+    <section class="hero" aria-labelledby="heroTitle"><div class="hero-inner"><h1 class="sr-only" id="heroTitle">Gold Loans from Stark Consolidate Finance</h1>
+      <div class="hero-promises"><div class="promise"><span class="promise-icon">%</span><strong>Attractive<br>interest rate</strong></div><div class="promise"><span class="promise-icon">◷</span><strong>Quick loan<br>disbursement</strong></div><div class="promise"><span class="promise-icon">◇</span><strong>Safe gold<br>handling</strong></div></div>
+      <div class="hero-person" role="img" aria-label="Gold jewellery and coins"><div class="portrait-glow"></div><div class="gold-disc disc-one"></div><div class="gold-disc disc-two"></div><span class="hero-spark spark-one">✦</span><span class="hero-spark spark-two">✧</span><span class="hero-caption">A little gold<br>can go a long way</span></div>
+      <form class="lead-card" id="leadForm"><div class="lead-heading">Avail a Gold Loan at Fixed Interest Rate<br><span>Fill the form to get an instant call back</span></div><div class="lead-fields">
+        <label class="sr-only" for="leadName">Full name</label><input id="leadName" name="name" type="text" placeholder="Full Name" autocomplete="name" required>
+        <label class="sr-only" for="leadMobile">Mobile number</label><input id="leadMobile" name="mobile" type="tel" placeholder="Mobile" inputmode="numeric" pattern="[0-9+() -]{8,18}" autocomplete="tel" required>
+        <label class="sr-only" for="leadOtp">OTP</label><input id="leadOtp" name="otp" type="text" placeholder="OTP (demo only)" inputmode="numeric" maxlength="6" autocomplete="one-time-code" required>
+        <label class="consent"><input type="checkbox" name="terms" required><span>I agree to the <a href="#importantTerms">Terms and Conditions</a> and <a href="#importantTerms">Most Important Terms and Conditions</a>.</span></label>
+        <button class="button button-orange" type="submit">Apply Now</button><p class="form-note" id="leadFeedback" role="status" aria-live="polite">Demo form only. No OTP is sent and no details are stored.</p>
+      </div></form>
+    </div></section>
+
+    <section class="minimum container" aria-label="Minimum loan amount"><strong>Illustrative Minimum Loan Amounts:</strong><ul><li>₹3 lakh for new-to-bank customers in metro locations</li><li>₹2 lakh for new-to-bank customers in non-metro locations</li><li>Final eligibility depends on gold valuation and lender policy.</li></ul></section>
+
+    <section class="loan-calculator" id="calculator"><div class="container">
+      <div class="calc-heading"><div><p class="eyebrow">PLAN YOUR GOLD LOAN</p><h1>Gold Loan Calculator</h1><p>Instantly estimate the value of your gold here</p></div><div class="gold-rate"><span>Rate / g (22K)</span><strong>₹ 13,368</strong><small>Illustrative rate</small></div></div>
+      <section class="step-card ornament-card" aria-labelledby="ornamentHeading"><div class="card-title"><span class="step-number">1</span><h2 id="ornamentHeading">Ornament Details</h2><button class="button button-orange add-button" type="button" id="addJewellery"><span aria-hidden="true">＋</span> Add Jewellery</button></div>
+        <div class="ornament-table" role="group" aria-label="Gold ornament weights"><div class="table-head"><span>#</span><span>Carat</span><span>Net Weight</span><span>Adjusted Weight (g)</span><span></span></div><div id="jewelleryRows"></div><div class="table-total"><strong>Total</strong><strong id="totalWeight">0 g</strong><strong id="totalAdjusted">0 g</strong><span id="weightStatus">Add your gold weight</span></div></div>
+      </section>
+      <section class="step-card rate-card" aria-labelledby="rateHeading"><div class="card-title"><span class="step-number">2</span><h2 id="rateHeading">Rate &amp; Tenure</h2></div><div class="rate-controls">
+        <div class="range-heading"><label for="interestRate">Rate of Interest</label><output id="interestRateOutput" for="interestRate">10.96% p.a.</output></div><input id="interestRate" class="rate-range" type="range" min="10" max="16" step="0.01" value="10.96"><div class="range-ends"><span>10.00%</span><span>16.00%</span></div>
+        <fieldset class="tenure-picker"><legend>Select a repayment tenure</legend><div class="tenure-options"><label class="tenure-choice active"><input type="radio" name="tenure" value="6" checked><span>6 Months</span></label><label class="tenure-choice"><input type="radio" name="tenure" value="12"><span>12 Months</span></label><label class="tenure-choice"><input type="radio" name="tenure" value="36"><span>36 Months</span></label></div></fieldset>
+      </div></section>
+      <section class="step-card repayment-card" aria-labelledby="repaymentHeading"><div class="card-title"><span class="step-number">3</span><h2 id="repaymentHeading">Interest &amp; Repayment</h2></div><div class="repayment-list">
+        <details class="repayment-row eligible-row" open><summary><span>Eligible Loan Amount</span><span class="summary-mark" aria-hidden="true"></span></summary><div class="repayment-detail"><strong id="eligibleAmount">₹ 0</strong><small>Estimated at up to 75% of the gold value</small></div></details>
+        <details class="repayment-row" open><summary><span>Total Interest Payable</span><span class="summary-mark" aria-hidden="true"></span></summary><div class="repayment-detail"><strong id="interestPayable">₹ 0</strong><small id="interestMeta">@ 10.96% p.a. for 6 months</small></div></details>
+        <details class="repayment-row" open><summary><span>Total Amount Payable</span><span class="summary-mark" aria-hidden="true"></span></summary><div class="repayment-detail"><strong id="amountPayable">₹ 0</strong><small>Principal + Interest</small></div></details>
+      </div></section>
+      <p class="calculator-disclaimer">Disclaimer: This is an indicative estimate only, based on details entered for the inquiry at 75% loan-to-value. The final loan amount will be determined after gold verification and in accordance with lender policies.</p>
+    </div></section>
+
+    <section class="network-section"><div class="container"><h2>Gold loan support, made convenient<br>with service across India.</h2><div class="network-cards"><article><p>Avail a Gold Loan for a period of 6 months, 12 months, or 36 months</p></article><article><p>Get loan amounts based on a simple gold valuation process</p></article><article><p>Choose a convenient branch and get support from our team</p></article></div><p class="trust-disclaimer">All loan amounts, rates and eligibility shown are illustrative and subject to verification and approval.</p></div></section>
+
+    <section class="why-section container"><div class="why-art"><img src="images/gold loan.webp" alt="Gold coins representing savings and financial planning"><span class="art-orbit orbit-a"></span><span class="art-orbit orbit-b"></span></div><div class="why-copy"><p class="eyebrow">GOLD LOAN, MADE SIMPLE</p><h2>Why choose Gold Loan?</h2><p>Whether you have a business, agricultural or personal finance requirement, a gold loan can help you meet your plans. Use eligible gold as security and choose a repayment tenure that works for you, subject to assessment and approval.</p></div></section>
+
+    <section class="process-section" id="process"><div class="container"><h2>How can I avail a Gold Loan?</h2><p class="section-intro">Apply now to avail your Gold Loan through a simple process.<br>Our 4-step process makes the disbursement journey clear and easy.</p><div class="process-card"><article><span class="line-icon">▣</span><strong>Step 1</strong><p>Apply online</p></article><article><span class="line-icon">☎</span><strong>Step 2</strong><p>Receive a call back</p></article><article><span class="line-icon">⌖</span><strong>Step 3</strong><p>Visit a branch for valuation</p></article><article><span class="line-icon">▱</span><strong>Step 4</strong><p>Loan disbursement</p></article></div></div></section>
+
+    <section class="feature-section container"><h2>Stark Gold Loan is a convenient solution for your financial needs</h2><div class="feature-grid"><article><span>◷</span><p>Quick Loan<br>Disbursal</p></article><article><span>▤</span><p>Minimal<br>Documentation</p></article><article><span>⌕</span><p>Fixed Interest<br>Rate</p></article><article><span>♢</span><p>Safety of<br>Jewellery</p></article><article><span>▦</span><p>Multiple Tenure<br>Options</p></article><article><span>⇄</span><p>Part Payment<br>Options</p></article></div></section>
+
+    <section class="faq-section" id="faqs"><div class="container faq-layout"><div class="faq-intro"><p class="eyebrow">HERE TO HELP</p><h2>Frequently asked questions</h2><p>Find answers to common questions about gold loans and the estimate above.</p></div><div class="faq-list">
+      <details><summary>How is the eligible gold loan amount estimated?<span>＋</span></summary><p>The estimate uses the displayed 22K gold rate, the weight adjusted for carat, and an illustrative 75% loan-to-value. Final valuation is done by the lender.</p></details>
+      <details><summary>What gold ornaments can I pledge?<span>＋</span></summary><p>Accepted ornaments and purity checks vary by lender. The gold must be inspected at a branch before an offer can be confirmed.</p></details>
+      <details><summary>How long can I take the loan for?<span>＋</span></summary><p>This demonstration shows 6, 12 and 36 month options. Actual tenure options depend on the lender and loan terms.</p></details>
+      <details><summary>Is the calculator result a confirmed offer?<span>＋</span></summary><p>No. It is only an indicative estimate and does not create a loan application or approval.</p></details>
+    </div></div></section>
+    <section class="closing-rate"><p>Gold loan rate information shown for demonstration purposes. Rates and fees can change; confirm current terms before applying.</p><a href="#importantTerms" id="importantTerms">Terms and Conditions</a></section>
+  </main>
+  <a class="sticky-apply" href="#leadForm">Apply Now</a>
+  <script src="gold.js"></script>
+</body>
+</html>
+
+

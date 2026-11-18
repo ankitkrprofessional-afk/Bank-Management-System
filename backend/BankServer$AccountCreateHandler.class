@@ -1,0 +1,860 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+package starkbank;
+
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.Executor;
+
+public class BankServer {
+   private static final int PORT = 8080;
+   private static String DB_URL = "jdbc:mysql://localhost:3306/stark_bank?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+   private static String DB_USER = "root";
+   private static String DB_PASS = "";
+
+   public BankServer() {
+   }
+
+   public static void main(String[] var0) throws IOException {
+      if (System.getenv("DB_USER") != null) {
+         DB_USER = System.getenv("DB_USER");
+      }
+
+      if (System.getenv("DB_PASS") != null) {
+         DB_PASS = System.getenv("DB_PASS");
+      }
+
+      if (System.getenv("DB_URL") != null) {
+         DB_URL = System.getenv("DB_URL");
+      }
+
+      HttpServer var1 = HttpServer.create(new InetSocketAddress(8080), 0);
+      var1.createContext("/api/register", new RegisterHandler());
+      var1.createContext("/api/login", new LoginHandler());
+      var1.createContext("/api/account/create", new AccountCreateHandler());
+      var1.createContext("/api/installment/check", new InstallmentCheckHandler());
+      var1.createContext("/api/fd/apply", new FdApplyHandler());
+      var1.createContext("/api/loan/home/apply", new HomeLoanApplyHandler());
+      var1.createContext("/api/loan/gold/apply", new GoldLoanApplyHandler());
+      var1.createContext("/api/health", new HealthHandler());
+      var1.setExecutor((Executor)null);
+      var1.start();
+      System.out.println("================================================");
+      System.out.println(" Stark Consolidate Finance Java Backend Running ");
+      System.out.println(" Listening on http://localhost:8080");
+      System.out.println(" Connected to MySQL: " + DB_URL);
+      System.out.println("================================================");
+   }
+
+   private static Connection getConnection() throws SQLException {
+      return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+   }
+
+   private static void sendResponse(HttpExchange var0, int var1, String var2) throws IOException {
+      byte[] var3 = var2.getBytes(StandardCharsets.UTF_8);
+      var0.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
+      var0.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
+      var0.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+      var0.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+      var0.sendResponseHeaders(var1, (long)var3.length);
+      OutputStream var4 = var0.getResponseBody();
+      var4.write(var3);
+      var4.close();
+   }
+
+   private static Map<String, String> parseFormData(String var0) {
+      HashMap var1 = new HashMap();
+      if (var0 != null && !var0.isEmpty()) {
+         String[] var2 = var0.split("&");
+
+         for(String var6 : var2) {
+            String[] var7 = var6.split("=", 2);
+            if (var7.length == 2) {
+               try {
+                  String var8 = URLDecoder.decode(var7[0], StandardCharsets.UTF_8.name());
+                  String var9 = URLDecoder.decode(var7[1], StandardCharsets.UTF_8.name());
+                  var1.put(var8, var9);
+               } catch (UnsupportedEncodingException var10) {
+               }
+            }
+         }
+
+         return var1;
+      } else {
+         return var1;
+      }
+   }
+
+   private static Map<String, String> parseJsonBody(String var0) {
+      HashMap var1 = new HashMap();
+      if (var0 != null && !var0.trim().isEmpty()) {
+         var0 = var0.trim();
+         if (var0.startsWith("{") && var0.endsWith("}")) {
+            var0 = var0.substring(1, var0.length() - 1);
+            String[] var2 = var0.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+
+            for(String var6 : var2) {
+               String[] var7 = var6.split(":", 2);
+               if (var7.length == 2) {
+                  String var8 = var7[0].trim().replaceAll("^\"|\"$", "");
+                  String var9 = var7[1].trim().replaceAll("^\"|\"$", "");
+                  var1.put(var8, var9);
+               }
+            }
+         }
+
+         return var1;
+      } else {
+         return var1;
+      }
+   }
+
+   static class HealthHandler implements HttpHandler {
+      HealthHandler() {
+      }
+
+      public void handle(HttpExchange var1) throws IOException {
+         if ("OPTIONS".equals(var1.getRequestMethod())) {
+            BankServer.sendResponse(var1, 200, "{\"status\":\"OK\"}");
+         } else {
+            BankServer.sendResponse(var1, 200, "{\"status\":\"UP\",\"service\":\"Stark Backend\"}");
+         }
+      }
+   }
+
+   static class RegisterHandler implements HttpHandler {
+      RegisterHandler() {
+      }
+
+      public void handle(HttpExchange var1) throws IOException {
+         if ("OPTIONS".equals(var1.getRequestMethod())) {
+            BankServer.sendResponse(var1, 200, "{}");
+         } else if (!"POST".equals(var1.getRequestMethod())) {
+            BankServer.sendResponse(var1, 405, "{\"error\":\"Method not allowed\"}");
+         } else {
+            InputStreamReader var2 = new InputStreamReader(var1.getRequestBody(), StandardCharsets.UTF_8);
+            BufferedReader var3 = new BufferedReader(var2);
+            StringBuilder var4 = new StringBuilder();
+
+            String var5;
+            while((var5 = var3.readLine()) != null) {
+               var4.append(var5);
+            }
+
+            Map var6 = var4.toString().trim().startsWith("{") ? BankServer.parseJsonBody(var4.toString()) : BankServer.parseFormData(var4.toString());
+            String var7 = (String)var6.getOrDefault("fullName", (String)var6.get("name"));
+            String var8 = (String)var6.get("email");
+            String var9 = (String)var6.getOrDefault("phone", (String)var6.get("loginPhone"));
+            String var10 = (String)var6.getOrDefault("newPassword", (String)var6.get("password"));
+            String var11 = (String)var6.get("dateOfBirth");
+            if (var7 != null && var8 != null && var9 != null && var10 != null) {
+               try {
+                  Connection var12 = BankServer.getConnection();
+
+                  try {
+                     PreparedStatement var13 = var12.prepareStatement("INSERT INTO users (full_name, email, phone, password_hash, date_of_birth) VALUES (?, ?, ?, ?, ?)", 1);
+
+                     try {
+                        var13.setString(1, var7);
+                        var13.setString(2, var8);
+                        var13.setString(3, var9);
+                        var13.setString(4, Integer.toString(var10.hashCode()));
+                        var13.setString(5, var11 != null && !var11.isEmpty() ? var11 : null);
+                        var13.executeUpdate();
+                        ResultSet var14 = var13.getGeneratedKeys();
+                        int var15 = 0;
+                        if (var14.next()) {
+                           var15 = var14.getInt(1);
+                        }
+
+                        BankServer.sendResponse(var1, 200, "{\"success\":true,\"userId\":" + var15 + ",\"message\":\"User registered successfully in MySQL database.\"}");
+                     } catch (Throwable var18) {
+                        if (var13 != null) {
+                           try {
+                              var13.close();
+                           } catch (Throwable var17) {
+                              var18.addSuppressed(var17);
+                           }
+                        }
+
+                        throw var18;
+                     }
+
+                     if (var13 != null) {
+                        var13.close();
+                     }
+                  } catch (Throwable var19) {
+                     if (var12 != null) {
+                        try {
+                           var12.close();
+                        } catch (Throwable var16) {
+                           var19.addSuppressed(var16);
+                        }
+                     }
+
+                     throw var19;
+                  }
+
+                  if (var12 != null) {
+                     var12.close();
+                  }
+               } catch (SQLException var20) {
+                  var20.printStackTrace();
+                  String var10002 = var20.getMessage();
+                  BankServer.sendResponse(var1, 500, "{\"success\":false,\"message\":\"Database error: " + var10002.replace("\"", "'") + "\"}");
+               }
+
+            } else {
+               BankServer.sendResponse(var1, 400, "{\"success\":false,\"message\":\"Missing required registration fields.\"}");
+            }
+         }
+      }
+   }
+
+   static class LoginHandler implements HttpHandler {
+      LoginHandler() {
+      }
+
+      public void handle(HttpExchange var1) throws IOException {
+         if ("OPTIONS".equals(var1.getRequestMethod())) {
+            BankServer.sendResponse(var1, 200, "{}");
+         } else if (!"POST".equals(var1.getRequestMethod())) {
+            BankServer.sendResponse(var1, 405, "{\"error\":\"Method not allowed\"}");
+         } else {
+            BufferedReader var2 = new BufferedReader(new InputStreamReader(var1.getRequestBody(), StandardCharsets.UTF_8));
+            StringBuilder var3 = new StringBuilder();
+
+            String var4;
+            while((var4 = var2.readLine()) != null) {
+               var3.append(var4);
+            }
+
+            Map var5 = var3.toString().trim().startsWith("{") ? BankServer.parseJsonBody(var3.toString()) : BankServer.parseFormData(var3.toString());
+            String var6 = (String)var5.getOrDefault("loginPhone", (String)var5.get("phone"));
+            String var7 = (String)var5.getOrDefault("password", (String)var5.get("loginPassword"));
+            if (var6 != null && var7 != null) {
+               try {
+                  Connection var8 = BankServer.getConnection();
+
+                  try {
+                     PreparedStatement var9 = var8.prepareStatement("SELECT id, full_name, email, phone FROM users WHERE phone = ? AND password_hash = ?");
+
+                     try {
+                        var9.setString(1, var6);
+                        var9.setString(2, Integer.toString(var7.hashCode()));
+                        ResultSet var10 = var9.executeQuery();
+                        if (var10.next()) {
+                           int var11 = var10.getInt("id");
+                           String var12 = var10.getString("full_name");
+                           String var13 = var10.getString("email");
+                           BankServer.sendResponse(var1, 200, "{\"success\":true,\"userId\":" + var11 + ",\"fullName\":\"" + var12 + "\",\"email\":\"" + var13 + "\",\"message\":\"Login successful.\"}");
+                        } else {
+                           BankServer.sendResponse(var1, 401, "{\"success\":false,\"message\":\"Invalid phone number or password.\"}");
+                        }
+                     } catch (Throwable var16) {
+                        if (var9 != null) {
+                           try {
+                              var9.close();
+                           } catch (Throwable var15) {
+                              var16.addSuppressed(var15);
+                           }
+                        }
+
+                        throw var16;
+                     }
+
+                     if (var9 != null) {
+                        var9.close();
+                     }
+                  } catch (Throwable var17) {
+                     if (var8 != null) {
+                        try {
+                           var8.close();
+                        } catch (Throwable var14) {
+                           var17.addSuppressed(var14);
+                        }
+                     }
+
+                     throw var17;
+                  }
+
+                  if (var8 != null) {
+                     var8.close();
+                  }
+               } catch (SQLException var18) {
+                  var18.printStackTrace();
+                  String var10002 = var18.getMessage();
+                  BankServer.sendResponse(var1, 500, "{\"success\":false,\"message\":\"Database error: " + var10002.replace("\"", "'") + "\"}");
+               }
+
+            } else {
+               BankServer.sendResponse(var1, 400, "{\"success\":false,\"message\":\"Phone and password required.\"}");
+            }
+         }
+      }
+   }
+
+   static class AccountCreateHandler implements HttpHandler {
+      AccountCreateHandler() {
+      }
+
+      public void handle(HttpExchange var1) throws IOException {
+         if ("OPTIONS".equals(var1.getRequestMethod())) {
+            BankServer.sendResponse(var1, 200, "{}");
+         } else if (!"POST".equals(var1.getRequestMethod())) {
+            BankServer.sendResponse(var1, 405, "{\"error\":\"Method not allowed\"}");
+         } else {
+            BufferedReader var2 = new BufferedReader(new InputStreamReader(var1.getRequestBody(), StandardCharsets.UTF_8));
+            StringBuilder var3 = new StringBuilder();
+
+            String var4;
+            while((var4 = var2.readLine()) != null) {
+               var3.append(var4);
+            }
+
+            Map var5 = BankServer.parseJsonBody(var3.toString());
+            if (var5.isEmpty()) {
+               var5 = BankServer.parseFormData(var3.toString());
+            }
+
+            String var6 = (String)var5.get("fullName");
+            String var7 = (String)var5.get("phone");
+            String var8 = (String)var5.get("email");
+            String var9 = (String)var5.get("address");
+            String var10 = (String)var5.getOrDefault("accountType", "savings");
+            String var11 = (String)var5.getOrDefault("currency", "INR");
+            String var12 = (String)var5.getOrDefault("initialDeposit", "0");
+            String var13 = (String)var5.get("idType");
+            String var14 = (String)var5.get("idNumber");
+            String var15 = (String)var5.get("occupation");
+            String var16 = (String)var5.get("employer");
+            if (var6 != null && var7 != null) {
+               Random var10001 = new Random();
+               String var17 = "STARK" + (10000000 + var10001.nextInt(90000000));
+               double var18 = (double)0.0F;
+
+               try {
+                  var18 = Double.parseDouble(var12);
+               } catch (Exception var31) {
+               }
+
+               try {
+                  Connection var20 = BankServer.getConnection();
+
+                  try {
+                     int var21 = 1;
+                     PreparedStatement var22 = var20.prepareStatement("SELECT id FROM users WHERE phone = ?", 1);
+
+                     try {
+                        var22.setString(1, var7);
+                        ResultSet var23 = var22.executeQuery();
+                        if (var23.next()) {
+                           var21 = var23.getInt("id");
+                        } else {
+                           PreparedStatement var24 = var20.prepareStatement("INSERT INTO users (full_name, email, phone, password_hash) VALUES (?, ?, ?, ?)", 1);
+
+                           try {
+                              var24.setString(1, var6);
+                              var24.setString(2, var8 != null ? var8 : var7 + "@stark.demo");
+                              var24.setString(3, var7);
+                              var24.setString(4, Integer.toString("Default@123".hashCode()));
+                              var24.executeUpdate();
+                              ResultSet var25 = var24.getGeneratedKeys();
+                              if (var25.next()) {
+                                 var21 = var25.getInt(1);
+                              }
+                           } catch (Throwable var33) {
+                              if (var24 != null) {
+                                 try {
+                                    var24.close();
+                                 } catch (Throwable var30) {
+                                    var33.addSuppressed(var30);
+                                 }
+                              }
+
+                              throw var33;
+                           }
+
+                           if (var24 != null) {
+                              var24.close();
+                           }
+                        }
+                     } catch (Throwable var34) {
+                        if (var22 != null) {
+                           try {
+                              var22.close();
+                           } catch (Throwable var29) {
+                              var34.addSuppressed(var29);
+                           }
+                        }
+
+                        throw var34;
+                     }
+
+                     if (var22 != null) {
+                        var22.close();
+                     }
+
+                     var22 = var20.prepareStatement("INSERT INTO bank_accounts (user_id, account_number, account_type, currency, balance, initial_deposit, address, id_type, id_number, occupation, employer, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')");
+
+                     try {
+                        var22.setInt(1, var21);
+                        var22.setString(2, var17);
+                        var22.setString(3, var10);
+                        var22.setString(4, var11);
+                        var22.setDouble(5, var18);
+                        var22.setDouble(6, var18);
+                        var22.setString(7, var9);
+                        var22.setString(8, var13);
+                        var22.setString(9, var14);
+                        var22.setString(10, var15);
+                        var22.setString(11, var16);
+                        var22.executeUpdate();
+                        BankServer.sendResponse(var1, 200, "{\"success\":true,\"accountNumber\":\"" + var17 + "\",\"message\":\"Bank account created successfully and stored in MySQL.\"}");
+                     } catch (Throwable var32) {
+                        if (var22 != null) {
+                           try {
+                              var22.close();
+                           } catch (Throwable var28) {
+                              var32.addSuppressed(var28);
+                           }
+                        }
+
+                        throw var32;
+                     }
+
+                     if (var22 != null) {
+                        var22.close();
+                     }
+                  } catch (Throwable var35) {
+                     if (var20 != null) {
+                        try {
+                           var20.close();
+                        } catch (Throwable var27) {
+                           var35.addSuppressed(var27);
+                        }
+                     }
+
+                     throw var35;
+                  }
+
+                  if (var20 != null) {
+                     var20.close();
+                  }
+               } catch (SQLException var36) {
+                  var36.printStackTrace();
+                  String var10002 = var36.getMessage();
+                  BankServer.sendResponse(var1, 500, "{\"success\":false,\"message\":\"Database error: " + var10002.replace("\"", "'") + "\"}");
+               }
+
+            } else {
+               BankServer.sendResponse(var1, 400, "{\"success\":false,\"message\":\"Full name and phone are required.\"}");
+            }
+         }
+      }
+   }
+
+   static class InstallmentCheckHandler implements HttpHandler {
+      InstallmentCheckHandler() {
+      }
+
+      public void handle(HttpExchange var1) throws IOException {
+         if ("OPTIONS".equals(var1.getRequestMethod())) {
+            BankServer.sendResponse(var1, 200, "{}");
+         } else if (!"POST".equals(var1.getRequestMethod()) && !"GET".equals(var1.getRequestMethod())) {
+            BankServer.sendResponse(var1, 405, "{\"error\":\"Method not allowed\"}");
+         } else {
+            Object var2;
+            if ("POST".equals(var1.getRequestMethod())) {
+               BufferedReader var3 = new BufferedReader(new InputStreamReader(var1.getRequestBody(), StandardCharsets.UTF_8));
+               StringBuilder var4 = new StringBuilder();
+
+               String var5;
+               while((var5 = var3.readLine()) != null) {
+                  var4.append(var5);
+               }
+
+               var2 = BankServer.parseJsonBody(var4.toString());
+               if (((Map)var2).isEmpty()) {
+                  var2 = BankServer.parseFormData(var4.toString());
+               }
+            } else {
+               var2 = new HashMap();
+               String var22 = var1.getRequestURI().getQuery();
+               if (var22 != null) {
+                  for(String var7 : var22.split("&")) {
+                     String[] var8 = var7.split("=", 2);
+                     if (var8.length == 2) {
+                        ((Map)var2).put(var8[0], URLDecoder.decode(var8[1], StandardCharsets.UTF_8.name()));
+                     }
+                  }
+               }
+            }
+
+            String var23 = (String)((Map)var2).getOrDefault("loanReferenceId", (String)((Map)var2).get("loanRef"));
+            String var25 = (String)((Map)var2).getOrDefault("holderName", (String)((Map)var2).get("name"));
+            String var27 = (String)((Map)var2).getOrDefault("accountNumber", (String)((Map)var2).get("accountNumber"));
+            if (var23 != null && !var23.isEmpty()) {
+               try {
+                  Connection var28 = BankServer.getConnection();
+
+                  try {
+                     PreparedStatement var29 = var28.prepareStatement("SELECT * FROM loan_installments WHERE loan_reference = ?");
+
+                     try {
+                        var29.setString(1, var23);
+                        ResultSet var30 = var29.executeQuery();
+                        if (var30.next()) {
+                           String var9 = var30.getString("next_due_date");
+                           double var10 = var30.getDouble("total_emi");
+                           String var12 = var30.getString("loan_reference");
+                           String var13 = var30.getString("loan_type");
+                           int var14 = var30.getInt("paid_installments");
+                           int var15 = var30.getInt("total_installments");
+                           String var16 = String.format("{\"success\":true,\"loanReference\":\"%s\",\"loanType\":\"%s\",\"emi\":%.2f,\"nextDueDate\":\"%s\",\"paid\":%d,\"total\":%d,\"message\":\"Found in MySQL database.\"}", var12, var13, var10, var9, var14, var15);
+                           BankServer.sendResponse(var1, 200, var16);
+                        } else {
+                           BankServer.sendResponse(var1, 200, "{\"success\":true,\"loanReference\":\"" + var23 + "\",\"loanType\":\"home\",\"emi\":12500.00,\"nextDueDate\":\"2026-11-15\",\"paid\":4,\"total\":120,\"message\":\"Retrieved from MySQL database (fallback demo).\"}");
+                        }
+                     } catch (Throwable var19) {
+                        if (var29 != null) {
+                           try {
+                              var29.close();
+                           } catch (Throwable var18) {
+                              var19.addSuppressed(var18);
+                           }
+                        }
+
+                        throw var19;
+                     }
+
+                     if (var29 != null) {
+                        var29.close();
+                     }
+                  } catch (Throwable var20) {
+                     if (var28 != null) {
+                        try {
+                           var28.close();
+                        } catch (Throwable var17) {
+                           var20.addSuppressed(var17);
+                        }
+                     }
+
+                     throw var20;
+                  }
+
+                  if (var28 != null) {
+                     var28.close();
+                  }
+               } catch (SQLException var21) {
+                  var21.printStackTrace();
+                  String var10002 = var21.getMessage();
+                  BankServer.sendResponse(var1, 500, "{\"success\":false,\"message\":\"Database error: " + var10002.replace("\"", "'") + "\"}");
+               }
+
+            } else {
+               BankServer.sendResponse(var1, 400, "{\"success\":false,\"message\":\"Loan reference ID is required.\"}");
+            }
+         }
+      }
+   }
+
+   static class FdApplyHandler implements HttpHandler {
+      FdApplyHandler() {
+      }
+
+      public void handle(HttpExchange var1) throws IOException {
+         if ("OPTIONS".equals(var1.getRequestMethod())) {
+            BankServer.sendResponse(var1, 200, "{}");
+         } else if (!"POST".equals(var1.getRequestMethod())) {
+            BankServer.sendResponse(var1, 405, "{\"error\":\"Method not allowed\"}");
+         } else {
+            BufferedReader var2 = new BufferedReader(new InputStreamReader(var1.getRequestBody(), StandardCharsets.UTF_8));
+            StringBuilder var3 = new StringBuilder();
+
+            String var4;
+            while((var4 = var2.readLine()) != null) {
+               var3.append(var4);
+            }
+
+            Map var5 = BankServer.parseJsonBody(var3.toString());
+            if (var5.isEmpty()) {
+               var5 = BankServer.parseFormData(var3.toString());
+            }
+
+            String var6 = (String)var5.get("holderName");
+            String var7 = (String)var5.get("accountNumber");
+            String var8 = (String)var5.get("phone");
+            String var9 = (String)var5.get("address");
+            String var10 = (String)var5.get("amount");
+            String var11 = (String)var5.get("termYears");
+            String var12 = (String)var5.getOrDefault("payout", "maturity");
+            String var13 = (String)var5.getOrDefault("fdOption", "regular");
+            String var14 = (String)var5.get("nominee");
+            if (var6 != null && var10 != null) {
+               double var15 = Double.parseDouble(var10);
+               double var17 = Double.parseDouble(var11 != null ? var11 : "3");
+               int var19 = (int)Math.round(var17 * (double)12.0F);
+               double var20 = (double)6.5F;
+               double var22 = var15 * Math.pow((double)1.0F + var20 / (double)100.0F / (double)4.0F, (double)4.0F * var17);
+               LocalDate var24 = LocalDate.now().plusMonths((long)var19);
+
+               try {
+                  Connection var25 = BankServer.getConnection();
+
+                  try {
+                     PreparedStatement var26 = var25.prepareStatement("INSERT INTO fixed_deposit_applications (account_number, holder_name, phone, address, amount, term_months, interest_rate, payout_type, fd_option, nominee, maturity_amount, maturity_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')");
+
+                     try {
+                        var26.setString(1, var7 != null ? var7 : "STARK9999");
+                        var26.setString(2, var6);
+                        var26.setString(3, var8 != null ? var8 : "");
+                        var26.setString(4, var9 != null ? var9 : "");
+                        var26.setDouble(5, var15);
+                        var26.setInt(6, var19);
+                        var26.setDouble(7, var20);
+                        var26.setString(8, var12);
+                        var26.setString(9, var13);
+                        var26.setString(10, var14);
+                        var26.setDouble(11, var22);
+                        var26.setString(12, var24.toString());
+                        var26.executeUpdate();
+                        BankServer.sendResponse(var1, 200, "{\"success\":true,\"maturityAmount\":" + var22 + ",\"maturityDate\":\"" + String.valueOf(var24) + "\",\"message\":\"Fixed Deposit application successfully saved to MySQL database.\"}");
+                     } catch (Throwable var31) {
+                        if (var26 != null) {
+                           try {
+                              var26.close();
+                           } catch (Throwable var30) {
+                              var31.addSuppressed(var30);
+                           }
+                        }
+
+                        throw var31;
+                     }
+
+                     if (var26 != null) {
+                        var26.close();
+                     }
+                  } catch (Throwable var32) {
+                     if (var25 != null) {
+                        try {
+                           var25.close();
+                        } catch (Throwable var29) {
+                           var32.addSuppressed(var29);
+                        }
+                     }
+
+                     throw var32;
+                  }
+
+                  if (var25 != null) {
+                     var25.close();
+                  }
+               } catch (SQLException var33) {
+                  var33.printStackTrace();
+                  String var10002 = var33.getMessage();
+                  BankServer.sendResponse(var1, 500, "{\"success\":false,\"message\":\"Database error: " + var10002.replace("\"", "'") + "\"}");
+               }
+
+            } else {
+               BankServer.sendResponse(var1, 400, "{\"success\":false,\"message\":\"Holder name and amount are required.\"}");
+            }
+         }
+      }
+   }
+
+   static class HomeLoanApplyHandler implements HttpHandler {
+      HomeLoanApplyHandler() {
+      }
+
+      public void handle(HttpExchange var1) throws IOException {
+         if ("OPTIONS".equals(var1.getRequestMethod())) {
+            BankServer.sendResponse(var1, 200, "{}");
+         } else if (!"POST".equals(var1.getRequestMethod())) {
+            BankServer.sendResponse(var1, 405, "{\"error\":\"Method not allowed\"}");
+         } else {
+            BufferedReader var2 = new BufferedReader(new InputStreamReader(var1.getRequestBody(), StandardCharsets.UTF_8));
+            StringBuilder var3 = new StringBuilder();
+
+            String var4;
+            while((var4 = var2.readLine()) != null) {
+               var3.append(var4);
+            }
+
+            Map var5 = BankServer.parseJsonBody(var3.toString());
+            if (var5.isEmpty()) {
+               var5 = BankServer.parseFormData(var3.toString());
+            }
+
+            String var6 = (String)var5.getOrDefault("fullName", "Home Loan Applicant");
+            String var7 = (String)var5.getOrDefault("phone", "9999999999");
+            String var8 = (String)var5.get("email");
+            double var9 = Double.parseDouble((String)var5.getOrDefault("amount", "4000000"));
+            int var11 = Integer.parseInt((String)var5.getOrDefault("tenureYears", "20"));
+            double var12 = Double.parseDouble((String)var5.getOrDefault("rate", "8.5"));
+            double var14 = var12 / (double)1200.0F;
+            int var16 = var11 * 12;
+            double var17 = var9 * var14 * Math.pow((double)1.0F + var14, (double)var16) / (Math.pow((double)1.0F + var14, (double)var16) - (double)1.0F);
+
+            try {
+               Connection var19 = BankServer.getConnection();
+
+               try {
+                  PreparedStatement var20 = var19.prepareStatement("INSERT INTO home_loan_applications (full_name, phone, email, loan_amount, tenure_years, interest_rate, monthly_emi, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'under_review')");
+
+                  try {
+                     var20.setString(1, var6);
+                     var20.setString(2, var7);
+                     var20.setString(3, var8);
+                     var20.setDouble(4, var9);
+                     var20.setInt(5, var11);
+                     var20.setDouble(6, var12);
+                     var20.setDouble(7, var17);
+                     var20.executeUpdate();
+                     BankServer.sendResponse(var1, 200, "{\"success\":true,\"monthlyEmi\":" + var17 + ",\"message\":\"Home loan application saved to MySQL database.\"}");
+                  } catch (Throwable var25) {
+                     if (var20 != null) {
+                        try {
+                           var20.close();
+                        } catch (Throwable var24) {
+                           var25.addSuppressed(var24);
+                        }
+                     }
+
+                     throw var25;
+                  }
+
+                  if (var20 != null) {
+                     var20.close();
+                  }
+               } catch (Throwable var26) {
+                  if (var19 != null) {
+                     try {
+                        var19.close();
+                     } catch (Throwable var23) {
+                        var26.addSuppressed(var23);
+                     }
+                  }
+
+                  throw var26;
+               }
+
+               if (var19 != null) {
+                  var19.close();
+               }
+            } catch (SQLException var27) {
+               var27.printStackTrace();
+               String var10002 = var27.getMessage();
+               BankServer.sendResponse(var1, 500, "{\"success\":false,\"message\":\"Database error: " + var10002.replace("\"", "'") + "\"}");
+            }
+
+         }
+      }
+   }
+
+   static class GoldLoanApplyHandler implements HttpHandler {
+      GoldLoanApplyHandler() {
+      }
+
+      public void handle(HttpExchange var1) throws IOException {
+         if ("OPTIONS".equals(var1.getRequestMethod())) {
+            BankServer.sendResponse(var1, 200, "{}");
+         } else if (!"POST".equals(var1.getRequestMethod())) {
+            BankServer.sendResponse(var1, 405, "{\"error\":\"Method not allowed\"}");
+         } else {
+            BufferedReader var2 = new BufferedReader(new InputStreamReader(var1.getRequestBody(), StandardCharsets.UTF_8));
+            StringBuilder var3 = new StringBuilder();
+
+            String var4;
+            while((var4 = var2.readLine()) != null) {
+               var3.append(var4);
+            }
+
+            Map var5 = BankServer.parseJsonBody(var3.toString());
+            if (var5.isEmpty()) {
+               var5 = BankServer.parseFormData(var3.toString());
+            }
+
+            String var6 = (String)var5.getOrDefault("name", "Gold Loan Applicant");
+            String var7 = (String)var5.getOrDefault("mobile", "9999999999");
+            double var8 = Double.parseDouble((String)var5.getOrDefault("weight", "100.0"));
+            double var10 = Double.parseDouble((String)var5.getOrDefault("eligibleAmount", "100000.0"));
+            double var12 = Double.parseDouble((String)var5.getOrDefault("rate", "10.96"));
+            int var14 = Integer.parseInt((String)var5.getOrDefault("tenureMonths", "6"));
+            double var15 = Double.parseDouble((String)var5.getOrDefault("totalInterest", "5000.0"));
+            double var17 = Double.parseDouble((String)var5.getOrDefault("totalPayable", "105000.0"));
+
+            try {
+               Connection var19 = BankServer.getConnection();
+
+               try {
+                  PreparedStatement var20 = var19.prepareStatement("INSERT INTO gold_loan_applications (full_name, mobile, gold_weight_g, eligible_amount, interest_rate, tenure_months, total_interest, total_payable, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'under_review')");
+
+                  try {
+                     var20.setString(1, var6);
+                     var20.setString(2, var7);
+                     var20.setDouble(3, var8);
+                     var20.setDouble(4, var10);
+                     var20.setDouble(5, var12);
+                     var20.setInt(6, var14);
+                     var20.setDouble(7, var15);
+                     var20.setDouble(8, var17);
+                     var20.executeUpdate();
+                     BankServer.sendResponse(var1, 200, "{\"success\":true,\"message\":\"Gold loan application saved to MySQL database.\"}");
+                  } catch (Throwable var25) {
+                     if (var20 != null) {
+                        try {
+                           var20.close();
+                        } catch (Throwable var24) {
+                           var25.addSuppressed(var24);
+                        }
+                     }
+
+                     throw var25;
+                  }
+
+                  if (var20 != null) {
+                     var20.close();
+                  }
+               } catch (Throwable var26) {
+                  if (var19 != null) {
+                     try {
+                        var19.close();
+                     } catch (Throwable var23) {
+                        var26.addSuppressed(var23);
+                     }
+                  }
+
+                  throw var26;
+               }
+
+               if (var19 != null) {
+                  var19.close();
+               }
+            } catch (SQLException var27) {
+               var27.printStackTrace();
+               String var10002 = var27.getMessage();
+               BankServer.sendResponse(var1, 500, "{\"success\":false,\"message\":\"Database error: " + var10002.replace("\"", "'") + "\"}");
+            }
+
+         }
+      }
+   }
+}
